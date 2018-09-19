@@ -33,8 +33,9 @@ $(function() {
          */
 
          it('urls are defined', function() {
-
+           //Loop through each feed in allFeeds
            allFeeds.forEach(function(feed) {
+             //Check if a url is exist in the feed
              expect(feed.url).toBeDefined();
              expect(feed.url.length).not.toBe(0);
            });
@@ -45,7 +46,9 @@ $(function() {
          * and that the name is not empty.
          */
          it('names are defined', function() {
+           //Loop through each feed in allFeeds
            allFeeds.forEach(function(feed) {
+             //check name property is defined in the feed
              expect(feed.name).toBeDefined();
              expect(feed.name.length).not.toBe(0);
            });
@@ -61,7 +64,9 @@ $(function() {
          * hiding/showing of the menu element.
          */
          it('is hidden by default', function() {
+           //This is to get body element from the document
            var body = document.querySelector("body");
+           //If class menu-hidden exist in body menu is hidden by default
            expect(body.classList.contains("menu-hidden")).toBe(true);
          });
 
@@ -71,11 +76,16 @@ $(function() {
          * clicked and does it hide when clicked again.
          */
          it('changes visibility when the menu icon is clicked', function() {
+           //Get body element and menu icon from the document
            var body = document.querySelector("body"),
                menu = document.querySelector(".menu-icon-link");
+          //When menu is clicked the first time
            menu.click();
+           //To check if the menu is showing
            expect(body.classList.contains("menu-hidden")).not.toBe(true);
+           //When the menu is clicked again
            menu.click();
+           //To check is the menu is hidden
            expect(body.classList.contains("menu-hidden")).toBe(true);
          });
       });
@@ -88,6 +98,7 @@ $(function() {
         * Remember, loadFeed() is asynchronous so this test will require
         * the use of Jasmine's beforeEach and asynchronous done() function.
         */
+        //This is to handle asynchronous of loadFeed function
         beforeEach(function(done) {
           loadFeed(0, function() {
             done();
@@ -95,6 +106,8 @@ $(function() {
         });
 
         it('should has at least a single element within the container', function(done) {
+          //To see if there are any childNodes in feed
+          //So the feed is not empty
           var cont = document.querySelector('.feed');
           expect(cont.childNodes.length).not.toBe(0);
           done();
@@ -107,10 +120,12 @@ $(function() {
         * by the loadFeed function that the content actually changes.
         * Remember, loadFeed() is asynchronous.
         */
+        //Create two arrays to hold content from the page of
+        //first feed and the second feed
         var page = [];
         var pageChanged = [];
         var entries = document.querySelectorAll('.entry');
-
+        //handle asynchronous
         beforeEach(function(done) {
           loadFeed(0);
           entries.forEach(function(entry) {
@@ -123,7 +138,7 @@ $(function() {
             pageChanged.push(entry.innerText);
           });
         });
-
+        //Compare two arrays to ensure contents are different
         it('content changed', function(done) {
           expect(page === pageChanged).not.toBe(true);
           done()
