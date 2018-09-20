@@ -67,7 +67,8 @@ $(function() {
            //This is to get body element from the document
            var body = document.querySelector("body");
            //If class menu-hidden exist in body menu is hidden by default
-           expect(body.classList.contains("menu-hidden")).toBe(true);
+           // expect(body.classList.contains("menu-hidden")).toBe(true);
+           expect(body.classList).toContain("menu-hidden");
          });
 
         /* TODO: Write a test that ensures the menu changes
@@ -79,14 +80,15 @@ $(function() {
            //Get body element and menu icon from the document
            var body = document.querySelector("body"),
                menu = document.querySelector(".menu-icon-link");
-          //When menu is clicked the first time
+           //When menu is clicked the first time
            menu.click();
            //To check if the menu is showing
            expect(body.classList.contains("menu-hidden")).not.toBe(true);
            //When the menu is clicked again
            menu.click();
            //To check is the menu is hidden
-           expect(body.classList.contains("menu-hidden")).toBe(true);
+           // expect(body.classList.contains("menu-hidden")).toBe(true);
+           expect(body.classList).toContain("menu-hidden");
          });
       });
 
@@ -108,7 +110,7 @@ $(function() {
         it('should has at least a single element within the container', function(done) {
           //To see if there are any childNodes in feed
           //So the feed is not empty
-          var cont = document.querySelector('.feed');
+          var cont = document.querySelector('.feed .entry');
           expect(cont.childNodes.length).not.toBe(0);
           done();
         });
@@ -127,17 +129,20 @@ $(function() {
         var entries = document.querySelectorAll('.entry');
         //handle asynchronous
         beforeEach(function(done) {
-          loadFeed(0);
-          entries.forEach(function(entry) {
-            page.push(entry.innerText);
-          })
-          loadFeed(1, function() {
-            done();
-          });
-          entries.forEach(function(entry) {
-            pageChanged.push(entry.innerText);
+          loadFeed(0, function() {
+            entries.forEach(function(entry) {
+              page.push(entry.innerText);
+            })
+            loadFeed(1, function() {
+              done();
+            });
           });
         });
+
+        entries.forEach(function(entry) {
+          pageChanged.push(entry.innerText);
+        });
+
         //Compare two arrays to ensure contents are different
         it('content changed', function(done) {
           expect(page === pageChanged).not.toBe(true);
